@@ -51,3 +51,60 @@ WHERE EXISTS (
 ```
 Essa consulta verifica se existem likes para o post do usuário sem precisar retornar todos os dados de likes, melhorando a performance.
 
+2.1 - 
+```sql
+CREATE OR REPLACE PROCEDURE realizar_transacao(
+    p_account_id INT,
+    p_amount DECIMAL(15,2)
+    )
+LANGUAGE plpgsql AS $$
+DECLARE
+    v_old_balance DECIMAL(15,2);
+    v_new_balance DECIMAL(15,2);
+BEGIN
+     BEGIN
+        SELECT balance INTO v_old_balance FROM accounts WHERE id = p_account_id FOR UPDATE;
+        v_new_balance := v_old_balance + p_amount;
+        UPDATE accounts SET balance = v_new_balance WHERE id = p_account_id;
+        
+        INSERT INTO transactions (account_id, amount, transaction_date) VALUES (p_account_id, p_amount, CURRENT_TIMESTAMP);
+        INSERT INTO audit_log (account_id, old_balance, new_balance, change_date) VALUES (p_account_id, v_old_balance, v_new_balance, CURRENT_TIMESTAMP);
+        COMMIT;
+    EXCEPTION
+        WHEN OTHERS THEN
+            ROLLBACK;
+            RAISE NOTICE 'Erro ao realizar transação: %', SQLERRM;
+    END;
+END;
+$$;
+```
+2.2 - 
+```sql
+CREATE OR REPLACE FUNCTION auditar_transacao() 
+RETURNS TRIGGER AS $$
+BEGIN 
+    INSERT INTO audit_log (account_id, old_balance, new_balance, change_date) VALUES (NEW.account_id, OLD.balance, NEW.balance, CURRENT_TIMESTAMP);
+    RETURN NEW;
+END;
+$$ LANGUAGE plpgsql;
+
+CREATE TRIGGER trigger_adit_transaction 
+AFTER UPDATE ON accounts 
+FOR EACH ROW 
+WHEN (OLD.balance IS DISTINCT FROM NEW.balance) 
+EXECUTE FUNCTION auditar_transacao();
+```
+
+2.3 - O uso de transactions como COMMIT e ROLLBACK garante a consistencia de dados no banco pois se alguma parte da transação falhar ou ou ocorrer um erro, todas as altertações feitas na transação são revertidas.
+
+2.4 - Com triggers e possivel automatizar registros de auditoria e validações, reduzir codigo das aplicações pois as regras de negocio ficam no banco, e garantir integridade de dados sem depender da aplicação.
+
+2.5 - PROCEDURE - Realiza todas as operações de uma vez em uma transação, consulta o saldo antigo, atualiza o saldo, insere a transação e registra no log de auditoria. Se algo falhar, reverte tudo com ROLLBACK. 
+
+TRIGGER - Dispara sempre que houver uma atualização na tabela de contas sempre que o old.balance for diferente do new.balance, registrando automaticamente no log de auditoria sem precisar chamar manualmente.
+
+2.6 - Uma das formas de evitar vulnerabilidades seria aplicar roles e permissões adequadas a cada função, evitar EXECUTE dinamicos, manter o uso de procedures parametrizadas para evitar SQL Injection.
+
+2.7 - Criei uma procedure que recebia o valor de um agendamento de horario de ausencia temporaria de um funcionario, atualizava o status de saida para AUSENTE, e verificava se o horario atual estava dentro de um periodo aceitavel comparado ao agendado, quando o funcionario retornava, atualizava o status do agendamento, o usuario tinha acesso a marcar o horario de retorno.
+Quando era atualizado o status do agendamento para RETORNOU pelo usuario, era disparado um trigger que registrava o CURRENT_TIMESTAMP na tabela de auditoria, e garantia que ele so conseguia mudar o status de AUSENTE para RETORNOU.
+

@@ -48,5 +48,11 @@ Teste - [`UserServiceTest.java`](src/test/java/com/br/teste/spring/service/UserS
 
 Exception - [`UserNotFoundException.java`](src/main/java/com/br/teste/spring/exception/UserNotFoundException.java).
 
+## Analise e Design
+### Projeto de Sistema
+1 - Consulte o arquivo [`biblioteca.png `](src/main/resources/diagrama/biblioteca.png) para ver o diagrama de classes do sistema de biblioteca.
+    Consulte o arquivo [`biblioteca.md`](src/main/resources/diagrama/biblioteca.md) para detalhes sobre o diagrama de classes.
+
+
 ## Respostas SQL
 Consulte o arquivo [`src/main/resources/sql/respostas-sql.md`](src/main/resources/sql/respostas-sql.md) para detalhes e exemplos completos.

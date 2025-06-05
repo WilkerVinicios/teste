@@ -24,6 +24,29 @@ Classe Execução - [`TransferenciaRunner.java`](src/main/java/com/br/teste/banc
 
 Teste - [`BancoServiceTest.java`](src/test/java/com/br/teste/banco/BancoServiceTest.java).
 
+### Spring Framework
+Projeto Spring Simples que exponha uma API RESTfull com as seguintes funcionalidades:
+```
+Post: Criação de um usuário.
+Get: Listagem de todos os usuários.
+Get por ID: Listagem de um usuário específico.
+Put: Atualização de um usuário.
+Delete: Exclusão de um usuário.
+```
+
+Controller - [`UserController.java`](src/main/java/com/br/teste/spring/controller/UserController.java).
+
+Entity - [`User.java`](src/main/java/com/br/teste/spring/entity/User.java).
+
+DTO - [`UserDTO.java`](src/main/java/com/br/teste/spring/dto/UserDTO.java).
+
+Service - [`UserService.java`](src/main/java/com/br/teste/spring/service/UserService.java).
+
+Repository - [`UserRepository.java`](src/main/java/com/br/teste/spring/repository/UserRepository.java).
+
+Teste - [`UserServiceTest.java`](src/test/java/com/br/teste/spring/service/UserServiceTest.java).
+
+Exception - [`UserNotFoundException.java`](src/main/java/com/br/teste/spring/exception/UserNotFoundException.java).
 
 ## Respostas SQL
 Consulte o arquivo [`src/main/resources/sql/respostas-sql.md`](src/main/resources/sql/respostas-sql.md) para detalhes e exemplos completos.

@@ -34,19 +34,19 @@ Put: Atualização de um usuário.
 Delete: Exclusão de um usuário.
 ```
 
-Controller - [`UserController.java`](src/main/java/com/br/teste/spring/controller/UserController.java).
+Controller - [`UserController.java`](src/main/java/com/br/teste/controller/UserController.java).
 
-Entity - [`User.java`](src/main/java/com/br/teste/spring/entity/User.java).
+Entity - [`User.java`](src/main/java/com/br/teste/entity/User.java).
 
-DTO - [`UserDTO.java`](src/main/java/com/br/teste/spring/dto/UserDTO.java).
+DTO - [`UserDTO.java`](src/main/java/com/br/teste/dto/UserDTO.java).
 
-Service - [`UserService.java`](src/main/java/com/br/teste/spring/service/UserService.java).
+Service - [`UserService.java`](src/main/java/com/br/teste/service/UserService.java).
 
-Repository - [`UserRepository.java`](src/main/java/com/br/teste/spring/repository/UserRepository.java).
+Repository - [`UserRepository.java`](src/main/java/com/br/teste/repository/UserRepository.java).
 
-Teste - [`UserServiceTest.java`](src/test/java/com/br/teste/spring/service/UserServiceTest.java).
+Teste - [`UserServiceTest.java`](src/test/java/com/br/teste/service/UserServiceTest.java).
 
-Exception - [`UserNotFoundException.java`](src/main/java/com/br/teste/spring/exception/UserNotFoundException.java).
+Exception - [`UserNotFoundException.java`](src/main/java/com/br/teste/exception/UserNotFoundException.java).
 
 ## Analise e Design
 ### Projeto de Sistema

@@ -53,6 +53,14 @@ Exception - [`UserNotFoundException.java`](src/main/java/com/br/teste/spring/exc
 1 - Consulte o arquivo [`biblioteca.png `](src/main/resources/diagrama/biblioteca.png) para ver o diagrama de classes do sistema de biblioteca.
     Consulte o arquivo [`biblioteca.md`](src/main/resources/diagrama/biblioteca.md) para detalhes sobre o diagrama de classes.
 
+### Refatoração de Código
+
+[`Order.java`](src/main/java/com/br/teste/order/Order.java)
+[`ProductItem.java`](src/main/java/com/br/teste/order/ProductItem.java)
+[`OrderItem.java`](src/main/java/com/br/teste/order/OrderItem.java)
+[`OrderService.java`](src/main/java/com/br/teste/order/OrderService.java)
+
+Texto de referencia a refatoração de código da classe Order.java usando os principios SOLID - [`exec_refatoracao.md`](src/main/resources/exercicios/exec_refatoracao.md)
 
 ## Respostas SQL
 Consulte o arquivo [`src/main/resources/sql/respostas-sql.md`](src/main/resources/sql/respostas-sql.md) para detalhes e exemplos completos.

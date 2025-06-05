@@ -108,3 +108,90 @@ TRIGGER - Dispara sempre que houver uma atualização na tabela de contas sempre
 2.7 - Criei uma procedure que recebia o valor de um agendamento de horario de ausencia temporaria de um funcionario, atualizava o status de saida para AUSENTE, e verificava se o horario atual estava dentro de um periodo aceitavel comparado ao agendado, quando o funcionario retornava, atualizava o status do agendamento, o usuario tinha acesso a marcar o horario de retorno.
 Quando era atualizado o status do agendamento para RETORNOU pelo usuario, era disparado um trigger que registrava o CURRENT_TIMESTAMP na tabela de auditoria, e garantia que ele so conseguia mudar o status de AUSENTE para RETORNOU.
 
+3.1 - 1FN - Não existe coluna multivalorada, cada coluna tem um unico valor.
+
+2FN - Todas as colunas não chave dependem totalmente da chave primária, ou seja, não existem dependências parciais.
+
+3FN - Nenhuma coluna depende de outra coluna que não seja chave primária, ou seja, não existem dependências transitivas.
+
+3.2 - Uma das situações que usaria desnormalização  para melhorar a performance seria em algum dashboard onde é necessário realizar consultas complexas e frequentes, tambem para redução de joins em queries críticas.
+
+3.3 - 
+```sql 
+SELECT 
+    or.id AS order_id,
+    ct.name AS customer_name,
+    ct.email AS customer_email,
+    pr.name AS product_name,
+    oi.quantity,
+    oi.price, 
+    or.order_date
+FROM orders or
+JOIN customers ct ON or.customer_id = ct.id 
+JOIN order_items oi ON or.id = oi.order_id 
+JOIN products pr ON oi.product_id = pr.id;
+```
+
+3.4 - Analisaria a consulta com o explain, evitaria usar SELECT *, verificaria o uso de indices nas FKs, e se necessario criaria views para simplificar consultas complexas.
+
+3.5 - Backups diarios completos e incrementais de hora em hora, testaria a integridade dos backups periodicamente, e manteria logs de transações para recuperação em caso de falhas.
+
+3.6 - No caso do postgresql, usaria o pg_dump para backups completos e pg_basebackup para backups incrementais, tambem usaria o WAL (Write Ahead Log) para garantir a integridade dos dados e permitir a recuperação em caso de falhas.
+
+3.7 - Não fiz uma mudança assim em um banco de e-commerce porem durante a implementação de um sistema de gerenciamento de banco de dados interno, fiz uma mudança em um ponto critico onde tinhamos a seguinte estrutura ( sgbd, user, solicitacao, sistema ) e alterei para ( user, solicitacao ) pois a tabela sgbd e a tabela sistema possuiam valores fixos e não necessitavam de uma tabela separada, o que simplificou a estrutura do banco e melhorou a performance das consultas.
+Foi criado dois campos adicionais na tabela de solicitacao para armazenar os dados do sgbd e do sistema, eliminando a necessidade de joins desnecessários.
+A mudança eliminou erros que ocorriam devido a nomes duplicados e por os valores serem tratados no JPA e como constantes diminuimos o risco de SQL Injection.
+
+PROCEDURE
+```sql
+CREATE OR REPLACE PROCEDURE resgistrar_ausencia(p_ausencia_id INT)
+LANGUAGE plpgsql AS $$
+DECLARE
+    v_horario_agendado TIMESTAMP;
+    v_status_atual VARCHAR(20);
+BEGIN
+    SELECT horario_saida, status INTO v_horario_agendado, v_status_atual 
+    FROM ausencias 
+    WHERE id = p_ausencia_id FOR UPDATE;
+    
+    IF v_status_atual != 'AGENDADO' THEN
+        RAISE EXCEPTION 'Ausência não agendada ou já iniciada.';
+    END IF;
+    IF NOW() < v_horario_agendado - INTERVAL '10 minutes' OR 
+       NOW() > v_horario_agendado + INTERVAL '10 minutes' THEN 
+        RAISE EXCEPTION 'Horário de ausência fora do intervalo permitido.';
+    END IF;
+    UPDATE ausencias
+    SET status = 'AUSENTE' 
+    WHERE id = p_ausencia_id;
+    
+    COMMIT;
+END;
+$$;
+```
+
+TRIGGER
+```sql
+CREATE OR REPLACE FUNCTION registrar_retorno() 
+RETURNS TRIGGER AS $$
+BEGIN
+    IF OLD.status = 'AUSENTE' AND NEW.status = 'RETORNOU' THEN 
+        NEW.horario_retorno := CURRENT_TIMESTAMP;
+    ELSIF OLD.status = 'RETORNOU' AND NEW.status = 'RETORNOU' THEN 
+        RAISE EXCEPTION 'Retorno já registrado.';
+    ELSIF OLD.status != 'AUSENTE' AND NEW.status = 'RETORNOU' THEN
+        RAISE EXCEPTION 'Não e possivel retornar sem ter ficado ausente.';
+    END IF;
+    
+    RETURN NEW;
+END;
+$$ LANGUAGE plpgsql;
+
+CREATE TRIGGER trigger_validar_retorno 
+BEFORE UPDATE ON ausencias 
+FOR EACH ROW 
+WHEN (OLD.status IS DISTINCT FROM NEW.status AND NEW.status = 'RETORNOU')
+EXECUTE FUNCTION registrar_retorno();
+```
+
+A solução com procedure e trigger trabalhando em conjunto garantiu um processo mais seguro mesmo com varios acessos simultaneos, tambem atuando como uma segurança adicional complementando a aplicação.

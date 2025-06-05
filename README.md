@@ -62,5 +62,8 @@ Exception - [`UserNotFoundException.java`](src/main/java/com/br/teste/spring/exc
 
 Texto de referencia a refatoração de código da classe Order.java usando os principios SOLID - [`exec_refatoracao.md`](src/main/resources/exercicios/exec_refatoracao.md)
 
+## Respostas Conhecimento de Frameworks e Ferramentas
+Consulte o arquivo [`src/main/resources/exercicios/exec_java.md`](src/main/resources/exercicios/exec_java.md) para detalhes e exemplos completos.
+
 ## Respostas SQL
 Consulte o arquivo [`src/main/resources/sql/respostas-sql.md`](src/main/resources/sql/respostas-sql.md) para detalhes e exemplos completos.

@@ -50,7 +50,7 @@ Exception - [`UserNotFoundException.java`](src/main/java/com/br/teste/spring/exc
 
 ## Analise e Design
 ### Projeto de Sistema
-1 - Consulte o arquivo [`biblioteca.png `](src/main/resources/diagrama/biblioteca.png) para ver o diagrama de classes do sistema de biblioteca.
+1 - Consulte o arquivo [`biblioteca.png`](src/main/resources/diagrama/biblioteca.png) ou [`biblioteca.jpg`](src/main/resources/diagrama/biblioteca.jpg)  para ver o diagrama de classes do sistema de biblioteca.
     Consulte o arquivo [`biblioteca.md`](src/main/resources/diagrama/biblioteca.md) para detalhes sobre o diagrama de classes.
 
 ### Refatoração de Código

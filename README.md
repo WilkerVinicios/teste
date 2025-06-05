@@ -65,5 +65,8 @@ Texto de referencia a refatoração de código da classe Order.java usando os pr
 ## Respostas Conhecimento de Frameworks e Ferramentas
 Consulte o arquivo [`src/main/resources/exercicios/exec_java.md`](src/main/resources/exercicios/exec_java.md) para detalhes e exemplos completos.
 
+## Respostas Resolução de Problemas
+Consulte o arquivo [`src/main/resources/exercicios/exec_java.md`](src/main/resources/exercicios/exec_java.md) para detalhes.
+
 ## Respostas SQL
 Consulte o arquivo [`src/main/resources/sql/respostas-sql.md`](src/main/resources/sql/respostas-sql.md) para detalhes e exemplos completos.

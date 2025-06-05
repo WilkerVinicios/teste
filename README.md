@@ -55,15 +55,20 @@ Exception - [`UserNotFoundException.java`](src/main/java/com/br/teste/exception/
 
 ### Refatoração de Código
 
-[`Order.java`](src/main/java/com/br/teste/order/Order.java)
-[`ProductItem.java`](src/main/java/com/br/teste/order/ProductItem.java)
-[`OrderItem.java`](src/main/java/com/br/teste/order/OrderItem.java)
-[`OrderService.java`](src/main/java/com/br/teste/order/OrderService.java)
+[`Order.java`](src/main/java/com/br/teste/order/model/Order.java)
+[`ProductItem.java`](src/main/java/com/br/teste/order/model/ProductItem.java)
+[`OrderItem.java`](src/main/java/com/br/teste/order/model/OrderItem.java)
+[`OrderService.java`](src/main/java/com/br/teste/order/service/OrderService.java)
 
 Texto de referencia a refatoração de código da classe Order.java usando os principios SOLID - [`exec_refatoracao.md`](src/main/resources/exercicios/exec_refatoracao.md)
 
 ## Respostas Conhecimento de Frameworks e Ferramentas
 Consulte o arquivo [`src/main/resources/exercicios/exec_java.md`](src/main/resources/exercicios/exec_java.md) para detalhes e exemplos completos.
+
+Exemplo pergunta 1 - Hibernate [`User.java`](src/main/java/com/br/teste/entity/User.java).
+
+Exemplo pergunta 2 - Testes Unitários [`CacheLRUTest`](src/test/java/com/br/teste/cache/CacheLRUTest.java).
+
 
 ## Respostas Resolução de Problemas
 Consulte o arquivo [`src/main/resources/exercicios/exec_java.md`](src/main/resources/exercicios/exec_java.md) para detalhes.
